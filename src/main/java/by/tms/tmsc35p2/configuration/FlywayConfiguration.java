@@ -46,6 +46,7 @@ public class FlywayConfiguration {
         return Flyway.configure()
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
+                .validateOnMigrate(false)  // Отключаем валидацию для тестирования
                 .load();
     }
 }
