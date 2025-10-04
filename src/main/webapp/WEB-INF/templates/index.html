@@ -1,10 +1,432 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .logo-bracket {
+            color: #FFD700;
+            font-weight: 900;
+        }
+
+        .logo-slash {
+            color: white;
+            font-weight: 900;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #FFD700;
+            color: #000000;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            background-size: cover;
+            background-position: center;
+            color: #000000;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            color: #000000;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #000000;
+            color: #FFD700;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: #FFD700;
+            color: #000000;
+            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 4rem 0;
+            background: #ffffff;
+        }
+
+        .products h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #000000;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 2px solid #FFD700;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 200px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000000;
+            font-size: 3rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #000000;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 1rem;
+        }
+
+        .product-btn {
+            width: 100%;
+            background: #000000;
+            color: #FFD700;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .product-btn:hover {
+            background: #FFD700;
+            color: #000000;
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: #FFD700;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #FFD700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #FFD700;
+            padding-top: 1rem;
+            color: #FFD700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .features-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <span class="logo-bracket">&lt;</span>
+                    <span>TMStore</span>
+                    <span class="logo-slash">/</span>
+                    <span class="logo-bracket">&gt;</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#products">Каталог товаров</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#cart">Корзина</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Добро пожаловать в наш интернет-магазин!</h1>
+            <p>Откройте для себя широкий ассортимент качественных товаров по выгодным ценам. Быстрая доставка и отличное обслуживание!</p>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2>Каталог товаров</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">📱</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Смартфон</h3>
+                        <p class="product-price">599</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Ноутбук</h3>
+                        <p class="product-price">1599</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🎧</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Наушники</h3>
+                        <p class="product-price">199</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">⌚</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Умные часы</h3>
+                        <p class="product-price">259</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">📷</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Камера</h3>
+                        <p class="product-price">1099</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🎮</div>
+                    <div class="product-info">
+                        <h3 class="product-title">Игровая консоль</h3>
+                        <p class="product-price">2799</p>
+                        <button class="product-btn">В корзину</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Покупателям</h3>
+                    <ul>
+                        <li><a href="#">Доставка и оплата</a></li>
+                        <li><a href="#">Возврат товара</a></li>
+                        <li><a href="#">Гарантия</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li>📞 +375 29 105-59-59</li>
+                        <li>📞 +375 29 305-59-59</li>
+                        <li>✉️ info@tmstore.by</li>
+                        <li>📍 г. Минск, ул. Тимирязева, 67 (офис 1101, этаж 11)</li>
+                        <li>Заказы принимаются:</li>
+                        <li>🕒 9:00-21:00 ежедневно</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ООО "ТичМиСторе". Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
