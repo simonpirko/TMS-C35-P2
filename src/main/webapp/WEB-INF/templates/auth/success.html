@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/base}">
+<head>
+    <title th:text="'Успешно!'">Успешно!</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="success-container">
+            <div class="success-icon">
+                ✓
+            </div>
+            
+            <div class="form-header">
+                <h2>Успешно!</h2>
+            </div>
+
+            <div th:if="${successMessage}" class="alert alert-success">
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <div th:if="${user}" class="user-info">
+                <h5>Информация о пользователе:</h5>
+                <p><strong>Имя пользователя:</strong> <span th:text="${user.username}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                <p><strong>Роль:</strong> 
+                    <span th:text="${user.role == 'SELLER' ? 'Продавец' : 'Покупатель'}"></span>
+                </p>
+                <p th:if="${user.shopName}">
+                    <strong>Магазин:</strong> <span th:text="${user.shopName}"></span>
+                </p>
+            </div>
+            
+            <div class="button-group">
+                <a th:href="@{/}" class="btn btn-secondary">
+                    На главную
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

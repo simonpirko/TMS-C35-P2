@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/base}">
+<head>
+    <title th:text="'Профиль'">Профиль</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="success-container">
+            <div class="success-icon">
+                👤
+            </div>
+            
+            <div class="form-header">
+                <h2>Профиль пользователя</h2>
+                <p th:text="'Добро пожаловать, ' + ${user.username} + '!'">Добро пожаловать!</p>
+            </div>
+
+            <div th:if="${user}" class="user-info">
+                <h5>Информация о профиле:</h5>
+                <p><strong>Имя пользователя:</strong> <span th:text="${user.username}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                <p><strong>Роль:</strong> 
+                    <span th:text="${user.role == T(by.tms.tmsc35p2.model.UserRole).SELLER ? 'Продавец' : 'Покупатель'}"></span>
+                </p>
+                <p th:if="${user.shopName}">
+                    <strong>Магазин:</strong> <span th:text="${user.shopName}"></span>
+                </p>
+            </div>
+            
+            <div class="button-group">
+                <a th:href="@{/}" class="btn btn-primary">
+                    На главную
+                </a>
+                <a th:href="@{/auth/logout}" class="btn btn-secondary">
+                    Выйти
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

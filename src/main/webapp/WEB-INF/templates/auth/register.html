@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/base}">
+<head>
+    <title th:text="'Регистрация'">Регистрация</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <div class="form-container" style="max-width: 700px;">
+            <div class="form-header">
+                <h2>Регистрация</h2>
+                <p>Создайте новый аккаунт</p>
+            </div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
+            <form th:action="@{/auth/register}" th:object="${registerForm}" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username">Имя пользователя</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="username" 
+                               th:field="*{username}"
+                               placeholder="Введите имя пользователя"
+                               required>
+                        <div th:if="${#fields.hasErrors('username')}" class="error">
+                            <span th:errors="*{username}"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               th:field="*{email}"
+                               placeholder="Введите email"
+                               required>
+                        <div th:if="${#fields.hasErrors('email')}" class="error">
+                            <span th:errors="*{email}"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="password" 
+                               th:field="*{password}"
+                               placeholder="Введите пароль"
+                               required>
+                        <div th:if="${#fields.hasErrors('password')}" class="error">
+                            <span th:errors="*{password}"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Подтвердите пароль</label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="confirmPassword" 
+                               th:field="*{confirmPassword}"
+                               placeholder="Повторите пароль"
+                               required>
+                        <div th:if="${#fields.hasErrors('confirmPassword')}" class="error">
+                            <span th:errors="*{confirmPassword}"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Роль пользователя</label>
+                    <select class="form-control" 
+                            id="role" 
+                            th:field="*{role}"
+                            required
+                            onchange="toggleShopNameField()">
+                        <option value="">Выберите роль</option>
+                        <option th:each="role : ${userRoles}" 
+                                th:value="${role}" 
+                                th:text="${role == T(by.tms.tmsc35p2.model.UserRole).SELLER ? 'Продавец' : 'Покупатель'}">
+                        </option>
+                    </select>
+                    <div th:if="${#fields.hasErrors('role')}" class="error">
+                        <span th:errors="*{role}"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group shop-name-field" id="shopNameField">
+                    <label for="shopName">Название магазина</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="shopName" 
+                           th:field="*{shopName}"
+                           placeholder="Введите название вашего магазина">
+                    <div class="form-help">Это поле обязательно для продавцов</div>
+                    <div th:if="${#fields.hasErrors('shopName')}" class="error">
+                        <span th:errors="*{shopName}"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Зарегистрироваться
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Уже есть аккаунт? 
+                    <a th:href="@{/auth/login}">Войти</a>
+                </p>
+            </div>
+        </div>
+        
+        <script>
+            function toggleShopNameField() {
+                const roleSelect = document.getElementById('role');
+                const shopNameField = document.getElementById('shopNameField');
+                const shopNameInput = document.getElementById('shopName');
+                
+                if (roleSelect.value === 'SELLER') {
+                    shopNameField.classList.add('show');
+                    shopNameInput.required = true;
+                } else {
+                    shopNameField.classList.remove('show');
+                    shopNameInput.required = false;
+                    shopNameInput.value = '';
+                }
+            }
+            
+            document.getElementById('confirmPassword').addEventListener('input', function() {
+                const password = document.getElementById('password').value;
+                const confirmPassword = this.value;
+                
+                if (password !== confirmPassword) {
+                    this.setCustomValidity('Пароли не совпадают');
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+        </script>
+    </main>
+</body>
+</html>
