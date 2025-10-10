@@ -1,6 +1,7 @@
 package by.tms.tmsc35p2;
 
 import by.tms.tmsc35p2.configuration.WebConfiguration;
+import by.tms.tmsc35p2.filter.AuthRedirectFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -33,6 +34,9 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
-        return new Filter[]{characterEncodingFilter};
+        
+        AuthRedirectFilter authRedirectFilter = new AuthRedirectFilter();
+        
+        return new Filter[]{characterEncodingFilter, authRedirectFilter};
     }
 }

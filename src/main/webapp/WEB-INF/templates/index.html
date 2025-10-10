@@ -338,6 +338,20 @@
         <div class="container">
             <h1>Добро пожаловать в наш интернет-магазин!</h1>
             <p>Откройте для себя широкий ассортимент качественных товаров по выгодным ценам. Быстрая доставка и отличное обслуживание!</p>
+            
+
+            <div th:if="${session.user == null}" class="auth-buttons" style="margin: 2rem 0; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a th:href="@{/auth/register}" class="btn btn-primary" style="padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Регистрация</a>
+                <a th:href="@{/auth/login}" class="btn btn-outline" style="padding: 12px 24px; background: transparent; color: #007bff; text-decoration: none; border: 2px solid #007bff; border-radius: 5px; font-weight: bold; transition: all 0.3s;">Вход</a>
+            </div>
+
+            <div th:if="${session.user != null}" class="welcome-message" style="margin: 2rem 0; text-align: center;">
+                <h3 th:text="'Добро пожаловать, ' + ${session.user.username} + '!'">Добро пожаловать!</h3>
+                <p>Вы успешно вошли в систему. Теперь вы можете пользоваться всеми возможностями нашего магазина.</p>
+                <div style="margin-top: 1rem;">
+                    <a th:href="@{/auth/profile}" class="btn btn-primary" style="padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Профиль</a>
+                </div>
+            </div>
         </div>
     </section>
 

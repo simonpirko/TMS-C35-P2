@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} + ' - TMStore'">TMStore</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .logo-bracket {
+            color: #FFD700;
+            font-weight: 900;
+        }
+
+        .logo-slash {
+            color: white;
+            font-weight: 900;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #FFD700;
+            color: #000000;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: #000000;
+            color: #FFD700;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: #FFD700;
+            color: #000000;
+            box-shadow: 0 6px 20px rgba(255,215,0,0.4);
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: #FFD700;
+        }
+
+        .btn-primary:hover {
+            background: #FFD700;
+            color: #000000;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            color: white;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Error messages */
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 0.5rem;
+        }
+
+        /* Success/Info containers */
+        .success-container,
+        .info-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .success-icon,
+        .info-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-icon {
+            color: #28a745;
+        }
+
+        .info-icon {
+            color: #667eea;
+        }
+
+        /* User info display */
+        .user-info {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .user-info h5 {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .user-info p {
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+
+        .user-info strong {
+            color: #333;
+        }
+
+        /* Button groups */
+        .button-group {
+            margin-top: 1.5rem;
+        }
+
+        .button-group .btn + .btn {
+            margin-left: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: #FFD700;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #FFD700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #FFD700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #FFD700;
+            padding-top: 1rem;
+            color: #FFD700;
+        }
+
+        /* Auth specific styles */
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .auth-footer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Shop name field */
+        .shop-name-field {
+            display: none;
+        }
+
+        .shop-name-field.show {
+            display: block;
+        }
+
+        .form-help {
+            font-size: 14px;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .form-container,
+            .success-container,
+            .info-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .button-group .btn + .btn {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+    <th:block layout:fragment="additional-head"></th:block>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <span class="logo-bracket">&lt;</span>
+                    <span>TMStore</span>
+                    <span class="logo-slash">/</span>
+                    <span class="logo-bracket">&gt;</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li th:if="${session.user == null}"><a href="/auth/login">Вход</a></li>
+                        <li th:if="${session.user == null}"><a href="/auth/register">Регистрация</a></li>
+                        <li th:if="${session.user != null}"><a href="/auth/profile">Профиль</a></li>
+                        <li th:if="${session.user != null}"><a href="/auth/logout">Выйти</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main layout:fragment="content">
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TMStore</h3>
+                    <p>Современная система управления торговыми операциями</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Навигация</h3>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li th:if="${session.user == null}"><a href="/auth/login">Вход</a></li>
+                        <li th:if="${session.user == null}"><a href="/auth/register">Регистрация</a></li>
+                        <li th:if="${session.user != null}"><a href="/auth/profile">Профиль</a></li>
+                        <li th:if="${session.user != null}"><a href="/auth/logout">Выйти</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Поддержка</h3>
+                    <ul>
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">О нас</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TMStore. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
