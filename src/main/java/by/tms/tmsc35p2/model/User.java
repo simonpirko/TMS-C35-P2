@@ -1,4 +1,4 @@
-package by.tms.tmsc35p2.configuration;
+package by.tms.tmsc35p2.model;
 
 
 import jakarta.validation.constraints.Email;

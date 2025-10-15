@@ -1,5 +1,7 @@
-package by.tms.tmsc35p2.configuration;
+package by.tms.tmsc35p2.controller;
 
+import by.tms.tmsc35p2.model.User;
+import by.tms.tmsc35p2.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

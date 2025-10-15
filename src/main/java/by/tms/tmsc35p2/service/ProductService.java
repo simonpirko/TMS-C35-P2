@@ -1,7 +1,7 @@
 package by.tms.tmsc35p2.service;
 
-import by.tms.tmsc35p2.configuration.Product;
-import by.tms.tmsc35p2.dao.ProductDao;
+import by.tms.tmsc35p2.model.Product;
+import by.tms.tmsc35p2.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,21 +9,17 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductDao dao;
+    private final ProductRepository productRepository;
 
-    public ProductService(ProductDao dao) {
-        this.dao = dao;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public void create(Product product) {
-        dao.save(product);
+    public void save(Product product) {
+        productRepository.save(product);
     }
 
-    public List<Product> getAll() {
-        return dao.findAll();
-    }
-
-    public Product getById(Long id) {
-        return dao.findById(id);
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 }

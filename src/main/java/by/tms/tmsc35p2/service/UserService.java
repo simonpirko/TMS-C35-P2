@@ -1,5 +1,7 @@
-package by.tms.tmsc35p2.configuration;
+package by.tms.tmsc35p2.service;
 
+import by.tms.tmsc35p2.model.User;
+import by.tms.tmsc35p2.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

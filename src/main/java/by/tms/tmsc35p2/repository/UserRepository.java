@@ -1,5 +1,6 @@
-package by.tms.tmsc35p2.configuration;
+package by.tms.tmsc35p2.repository;
 
+import by.tms.tmsc35p2.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
