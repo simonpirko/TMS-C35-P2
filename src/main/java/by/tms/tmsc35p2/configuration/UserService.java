@@ -24,4 +24,8 @@ public class UserService {
         return repository.findByEmail(email)
                 .filter(u -> u.getPassword().equals(password));
     }
+
+    public boolean deleteById(Long id) {
+        return repository.delete(id);
+    }
 }

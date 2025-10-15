@@ -49,6 +49,20 @@ public class UserRepository {
         return Optional.empty();
     }
 
+    public boolean delete(Long userId) {
+        String sql = "DELETE FROM users WHERE id=?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, userId.toString());
+
+            return stmt.execute();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при удалении пользователя", e);
+        }
+    }
+
     private User mapRow(ResultSet rs) throws SQLException {
         return new User(
                 rs.getLong("id"),

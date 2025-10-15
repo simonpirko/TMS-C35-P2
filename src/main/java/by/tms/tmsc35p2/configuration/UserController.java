@@ -1,12 +1,16 @@
 package by.tms.tmsc35p2.configuration;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Controller
 @RequestMapping("/user")
@@ -51,8 +55,7 @@ public class UserController {
     public String login(
             @RequestParam String email,
             @RequestParam String password,
-            Model model)
-    {
+            Model model) {
         Optional<User> user = userService.login(email, password);
         if (user.isPresent()) {
             model.addAttribute("user", user.get());
@@ -60,6 +63,17 @@ public class UserController {
         } else {
             model.addAttribute("error", "Неверный email или пароль");
             return "login";
+        }
+    }
+
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam Long id) {
+        boolean deleted = userService.deleteById(id);
+        if (deleted) {
+            return ResponseEntity.ok("Пользователь успешно удалён");
+        } else {
+            return ResponseEntity.status(NOT_FOUND)
+                    .body("Пользователь с таким ID не найден");
         }
     }
 }
