@@ -51,4 +51,40 @@ public class ProductRepository {
         }
         return products;
     }
+
+    public List<Product> findProductsByName(String searchTerm) {
+        String sql = "SELECT * FROM products WHERE name LIKE ?";
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + searchTerm + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    products.add(mapRowToProduct(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при поиске продуктов", e);
+        }
+
+        return products;
+    }
+
+    private Product mapRowToProduct(ResultSet rs) {
+        try {
+            Product product = new Product();
+            product.setId(rs.getLong("id"));
+            product.setName(rs.getString("name"));
+            product.setPrice(rs.getLong("price"));
+            product.setDescription(rs.getString("description"));
+            return product;
+        } catch (SQLException e) {
+            System.err.println("Ошибка при маппинге строки: " + e.getMessage());
+            throw new RuntimeException("Ошибка при преобразовании строки в Product", e);
+        }
+    }
 }

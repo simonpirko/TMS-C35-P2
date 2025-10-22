@@ -4,10 +4,10 @@ import by.tms.tmsc35p2.model.Product;
 import by.tms.tmsc35p2.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/products")
@@ -36,4 +36,12 @@ public class ProductController {
         productService.save(product);
         return "redirect:/products";
     }
+
+    @GetMapping("/search")
+    public String search(@RequestParam String name, Model model) {
+        List<Product> products = productService.searchProducts(name);
+        model.addAttribute("products", products);
+        return "products/search"; // => /WEB-INF/templates/products/search.html
+    }
+
 }
