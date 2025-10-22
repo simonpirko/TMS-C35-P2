@@ -30,7 +30,7 @@ public class ProductDao {
 
     public void save(Product product) {
         jdbcTemplate.update(
-                "insert into products (title, description, price, image) values (?, ?, ?, ?)",
+                "insert into products (name, description, price, image) values (?, ?, ?, ?)",
                 product.getName(), product.getDescription(), product.getPrice(), product.getImageUrl()
         );
     }
@@ -46,4 +46,10 @@ public class ProductDao {
                 id
         );
     }
+    public List<Product> findByName(String name) {
+        String sql = "SELECT * FROM products WHERE LOWER(name) LIKE LOWER(?)";
+        String searchPattern = "%" + name + "%";
+        return jdbcTemplate.query(sql, this::mapRow, searchPattern);
+    }
+
 }
