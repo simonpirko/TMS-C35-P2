@@ -338,7 +338,7 @@
         <div class="container">
             <h1>Добро пожаловать в наш интернет-магазин!</h1>
             <p>Откройте для себя широкий ассортимент качественных товаров по выгодным ценам. Быстрая доставка и отличное обслуживание!</p>
-            
+
 
             <div th:if="${session.user == null}" class="auth-buttons" style="margin: 2rem 0; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <a th:href="@{/auth/register}" class="btn btn-primary" style="padding: 12px 24px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: background 0.3s;">Регистрация</a>
@@ -358,7 +358,13 @@
     <!-- Products Section -->
     <section class="products" id="products">
         <div class="container">
+
             <h2>Каталог товаров</h2>
+            <form action="/products/search" method="get" style="text-align: center; margin: 2rem 0;">
+                <input type="text" name="name" placeholder="Введите название товара" required
+                       style="padding: 0.5rem 1rem; border-radius: 5px; border: 1px solid #ccc;">
+                <button type="submit" class="btn">Найти</button>
+            </form>
             <div class="products-grid">
                 <div class="product-card">
                     <div class="product-image">📱</div>
